@@ -7,8 +7,11 @@ dotenv.config();
 const app = express();
 
 // Enable CORS for frontend
+// Enable CORS for frontend
+const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
+
 app.use(cors({
-    origin: ["https://you-pi.in", "https://you-pi.in/", "https://www.you-pi.in", "https://www.you-pi.in/", "http://localhost:5173", "http://localhost:5174", "http://localhost:5175"],
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true
 }));
