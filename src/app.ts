@@ -31,7 +31,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 // Explicitly handle OPTIONS requests for all routes to prevent 401s on preflight
-app.options("/(.*)", cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 
 // Parse JSON and URL-encoded requests
 app.use(express.json());
