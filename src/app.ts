@@ -24,6 +24,15 @@ app.use(express.urlencoded({ extended: true }));
 import { userContactRouter } from "./routes/userContact.route";
 import { userWaitlistRouter } from "./routes/userWaitlist.route";
 
+// Health Check Route
+app.get("/", (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "API is running successfully",
+        timestamp: new Date().toISOString()
+    });
+});
+
 // Use routes
 app.use("/api/v1", userContactRouter);
 app.use("/api/v1", userWaitlistRouter);
