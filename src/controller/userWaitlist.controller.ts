@@ -10,17 +10,18 @@ const createUserWaitlist = async (req: Request, res: Response): Promise<void> =>
       return;
     }
 
-    await sendTestEmail(
+    // Send email asynchronously (do not await) to prevent timeout
+    sendTestEmail(
       name,
       email,
       phone,
       `Waitlist Signup - ${name}`,
       `Hello ${name},<br/><br/>Thank you for joining our waitlist! We will notify you when we launch.<br/><br/>Phone: ${phone}<br/>Email: ${email}`
-    );
+    ).catch(err => console.error("Background Email Error:", err));
 
     res.status(201).json({
       success: true,
-      message: "Waitlist information received and email sent successfully.",
+      message: "Waitlist information received successfully.",
     });
   } catch (error) {
     console.error("❌ Error in waitlist controller:", error);

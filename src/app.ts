@@ -7,15 +7,12 @@ dotenv.config();
 const app = express();
 
 // Enable CORS for frontend
-// Enable CORS for frontend
 const defaultOrigins = [
     "https://you-pi.in",
-    "https://you-pi.in/",
     "https://www.you-pi.in",
-    "https://www.you-pi.in/",
     "http://localhost:5173",
-    "http://localhost:5174",
-    "http://localhost:5175"
+    "http://localhost:3000",
+    "https://telecom-backend-zk19.onrender.com"
 ];
 
 const envOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
@@ -23,11 +20,18 @@ const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])]; // Merg
 
 console.log("Allowed Origins:", allowedOrigins); // Log for debugging
 
-app.use(cors({
+const corsOptions = {
     origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    credentials: true
-}));
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
+// Explicitly handle OPTIONS requests for all routes to prevent 401s on preflight
+app.options('*', cors(corsOptions));
 
 // Parse JSON and URL-encoded requests
 app.use(express.json());
