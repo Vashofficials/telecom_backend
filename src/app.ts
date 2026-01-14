@@ -8,11 +8,24 @@ const app = express();
 
 // Enable CORS for frontend
 // Enable CORS for frontend
-const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
+const defaultOrigins = [
+    "https://you-pi.in",
+    "https://you-pi.in/",
+    "https://www.you-pi.in",
+    "https://www.you-pi.in/",
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175"
+];
+
+const envOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
+const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])]; // Merge and remove duplicates
+
+console.log("Allowed Origins:", allowedOrigins); // Log for debugging
 
 app.use(cors({
     origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true
 }));
 
